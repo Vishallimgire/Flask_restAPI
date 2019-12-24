@@ -25,7 +25,3 @@ class ItemModel(db.Model):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
-
-    @classmethod
-    def all_items(cls):
-        pass

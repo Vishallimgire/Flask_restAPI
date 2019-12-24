@@ -25,14 +25,15 @@ class Item(Resource):
         try:
             print(name)
             items = ItemModel.item_by_name(name)
-            print('items___',items)
+            # print('items___',items)
             if items:
                 return {'message': f'Item has already exists with {name} name'}, 400
             data = self.parser.parse_args()
             item = ItemModel(name, data['price'])
             # print(item)
             item.save_to_db()
-        except:
+        except Exception as e:
+            print(e)
             return {'message':'Error occured'}, 500
         else:
             return item.json(), 201
@@ -56,8 +57,4 @@ class Item(Resource):
 
 class ItemList(Resource):
     def get(self):
-        try:
-            items = ItemModel.all_items()
-        except:
-            return {'message':'Error occure in getting items'}, 500
-        return {'items':items}
+        return {'items': [item.json() for item in ItemModel.query.all()]}
